@@ -1,54 +1,106 @@
 # t3_act8_eq10 — EduControl
 
-Mini sistema en React (Vite) que simula un login real con la API de DummyJSON y muestra una tabla de alumnos con filtros, paginación reflejada en la URL y acciones CRUD.
+Mini sistema web desarrollado en React (Vite) para la gestión escolar. Simula un flujo de autenticación real conectándose a la API REST de DummyJSON y ofrece un módulo completo de administración de alumnos con filtrado avanzado, paginación dinámica sincronizada en la URL mediante query parameters y operaciones CRUD (Create, Read, Update, Delete) respaldadas por estado local y peticiones HTTP.
 
-## Integrantes (Equipo 10)
+---
 
-- Martínez Pacheco Cristian
-- Mendoza Lucero Hasiel Isai
+## 👥 Integrantes (Equipo 10)
 
-## APIs utilizadas
+- **Martínez Pacheco Cristian**
+- **Mendoza Lucero Hasiel Isai**
 
-- **Login:** DummyJSON Auth — `POST https://dummyjson.com/auth/login`
-- **Tabla de datos:** DummyJSON Users — `https://dummyjson.com/users`, presentados como la lista de alumnos del sistema.
-  - Listado: `GET /users?limit=0`
-  - Agregar: `POST /users/add`
-  - Editar: `PUT /users/{id}`
-  - Eliminar: `DELETE /users/{id}`
+---
 
-DummyJSON simula las escrituras, así que cada acción primero hace la petición real a la API y después refleja el cambio en el estado local (`useState`).
+## 🚀 Enlace de Despliegue en Servidor
 
-Usuario de prueba: `emilys` / `emilyspass` (también se puede entrar con el correo del usuario).
+El proyecto se encuentra compilado y desplegado de manera pública en el servidor VPS:
+👉 **[http://68.155.155.10/t3_act8_eq10/](http://68.155.155.10/t3_act8_eq10/)**
 
-## Proyecto desplegado
+---
 
-http://68.155.155.10/t3_act8_eq10/
+## 🔌 Especificaciones de APIs Integradas
 
-## Funcionalidades
+El sistema interactúa con los servicios RESTful proporcionados por **DummyJSON**:
 
-- Login con validación de campos vacíos y mensaje de error con credenciales incorrectas.
-- Vista del sistema protegida: sin sesión solo se muestra el login.
-- Sidebar con Inicio, Alumnos, Materias y Reportes; navbar con foto, nombre de usuario y botón de cerrar sesión.
-- Tabla con búsqueda por nombre, filtro por género, paginación y selector de 10, 20, 40 o 50 registros.
-- Vista, página, límite y filtros en la URL (`?view=alumnos&page=2&limit=20`), compatibles con el botón de regresar del navegador.
-- Indicador de carga y mensaje de error con botón de reintentar.
-- Agregar, editar (con confirmación) y eliminar (con confirmación).
+### 1. Autenticación y Sesión
+- **Endpoint:** `POST https://dummyjson.com/auth/login`
+- **Payload:** `{ "username": "...", "password": "..." }`
+- **Manejo de Respuestas:** Retorna el token JWT de sesión, así como el perfil público del usuario (nombre, apellido, email, avatar).
 
-## Estructura
+### 2. Módulo de Alumnos (DummyJSON Users)
+Los usuarios de la API son adaptados dentro de la interfaz para representar la lista oficial de alumnos del sistema EduControl.
+- **Consulta masiva (Listado):** `GET https://dummyjson.com/users?limit=0`
+- **Registro de Alumno:** `POST https://dummyjson.com/users/add`
+- **Edición de Registro:** `PUT https://dummyjson.com/users/{id}`
+- **Eliminación de Registro:** `DELETE https://dummyjson.com/users/{id}`
+
+> **Nota técnica sobre persistencia:** Dado que DummyJSON es un servicio API mock que simula operaciones de escritura, cada petición responde con el objeto modificado de manera exitosa, pero las variaciones se sincronizan en el estado reactivo (`useState`) para mantener la coherencia dentro de la experiencia de usuario.
+
+---
+
+## 🔑 Credenciales de Acceso para Pruebas
+
+Para validar el módulo de inicio de sesión y la protección de rutas, se pueden utilizar los siguientes usuarios activos:
+
+| Usuario | Contraseña | Rol / Perfil de Prueba |
+| :--- | :--- | :--- |
+| `emilys` | `emilyspass` | Administrador General |
+| `kminchelle` | `0lelR_` | Usuario Docente |
+
+*Nota: La interfaz permite también la autenticación utilizando el correo electrónico asociado al usuario.*
+
+---
+
+## ✨ Características Principales y Funcionalidades
+
+### 🛡️ Autenticación y Seguridad
+- Formulario de login con validación reactiva de campos obligatorios.
+- Mensajes visuales para la gestión de errores de red o credenciales incorrectas.
+- Rutas protegidas: el acceso directo a los módulos internos está restringido mientras no se detecte un token o sesión activa.
+
+### 📐 Maquetación y Layout Reutilizable
+- **Sidebar Dinámico:** Menú de navegación con accesos rápidos a Inicio, Alumnos, Materias y Reportes.
+- **Navbar Superior:** Muestra la información del usuario autenticado (fotografía de perfil, nombre) e incluye la acción de cierre de sesión (*Logout*).
+
+### 📊 Módulo de Alumnos y Data Table
+- **Búsqueda global:** Filtrado en tiempo real por nombre completo o correo.
+- **Filtro por género:** Segmentación instantánea de los datos.
+- **Paginación configurable:** Selección de densidad de datos (10, 20, 40 o 50 registros por página).
+- **Sincronización en URL:** Los parámetros `view`, `page`, `limit` y los filtros aplicados se reflejan en la barra de direcciones (`?view=alumnos&page=2&limit=20`), lo que permite compartir enlaces con búsquedas específicas y navegar mediante los botones de avance/retroceso del navegador.
+
+### ✏️ Operaciones CRUD
+- Modal de alta para nuevos estudiantes.
+- Edición de campos existentes con modales de confirmación para prevenir cambios accidentales.
+- Borrado de registros mediante diálogos de confirmación interactivos.
+- Indicadores visuales de estado (*Loading spinners*) e interfaces de recuperación ante fallas de red.
+
+---
+
+## 📁 Estructura del Proyecto
 
 ```
 src/
-├── api/            # httpClient, authService, studentsService
-├── components/
-│   ├── Layout/     # Sidebar, Navbar
-│   ├── Login/
-│   ├── Modal/      # Modal, ConfirmDialog
-│   ├── Students/   # StudentForm
-│   └── Table/      # DataTable, TableFilters, Pagination
-├── constants/
-├── hooks/          # useStudents, useUrlParams
-└── pages/          # Dashboard, HomePage, StudentsPage, PlaceholderPage
+├── api/                  # Clientes HTTP y servicios REST
+│   ├── authService.js    # Peticiones de inicio de sesión y token
+│   ├── httpClient.js     # Configuración central de Fetch/Axios
+│   └── studentsService.js# Métodos para operaciones CRUD de alumnos
+├── components/           # Componentes modulares y reutilizables
+│   ├── Layout/           # Sidebar, Navbar y contenedores principales
+│   ├── Login/            # Formulario de credenciales y mensajes
+│   ├── Modal/            # Modales universales y diálogos de confirmación
+│   ├── Students/         # Formularios de alta/edición de alumnos
+│   └── Table/            # Componentes de tabla, filtros y paginador
+├── constants/            # Constantes de configuración global
+├── hooks/                # Custom Hooks para lógica de estado y URL
+│   ├── useStudents.js    # Custom hook para el estado del CRUD de alumnos
+│   └── useUrlParams.js   # Sincronización de filtros y paginación en URL
+└── pages/                # Vistas principales del sistema
+├── Dashboard.jsx     # Contenedor principal de la aplicación
+├── HomePage.jsx      # Pantalla de bienvenida
+├── PlaceholderPage.jsx# Vistas secundarias en desarrollo
+└── StudentsPage.jsx  # Vista principal del módulo de alumnos
 ```
+
 
 ## Ejecutar en local
 
