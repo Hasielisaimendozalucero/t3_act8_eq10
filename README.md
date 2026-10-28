@@ -18,6 +18,23 @@ El proyecto se encuentra compilado y desplegado de manera pública en el servido
 
 ---
 
+## 🎨 Diseños y Mockups de Figma
+
+A continuación se presenta la propuesta visual diseñada previamente en Figma para la interfaz de la aplicación:
+
+### 1. Pantalla de Autenticación (Login)
+![Login Figma](./img/login.png)
+
+### 2. Pantalla de Bienvenida (Inicio)
+![Inicio Figma](./img/inicio.png)
+
+### 3. Módulo de Lista de Alumnos (Tabla y Filtros)
+![Lista de Alumnos Figma](./img/lista%20alumnos.png)
+
+---
+
+
+
 ## 🔌 Especificaciones de APIs Integradas
 
 El sistema interactúa con los servicios RESTful proporcionados por **DummyJSON**:
@@ -45,7 +62,7 @@ Para validar el módulo de inicio de sesión y la protección de rutas, se puede
 | Usuario | Contraseña | Rol / Perfil de Prueba |
 | :--- | :--- | :--- |
 | `emilys` | `emilyspass` | Administrador General |
-| `kminchelle` | `0lelR_` | Usuario Docente |
+
 
 *Nota: La interfaz permite también la autenticación utilizando el correo electrónico asociado al usuario.*
 
